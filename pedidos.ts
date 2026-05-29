@@ -1,5 +1,9 @@
-// 1. Classe de Banco de Dados Concreta
-class BancoDeDadosMySQL {
+// 1. Interface e implementação de banco de dados
+interface BancoDeDados {
+    salvar(dados: any): void;
+}
+
+class BancoDeDadosMySQL implements BancoDeDados {
     salvar(dados: any): void {
         console.log("Salvando dados no MySQL...");
     }
@@ -45,7 +49,7 @@ class CalculadoraPedido {
 }
 
 class PedidoRepository {
-    constructor(private bancoDeDados: BancoDeDadosMySQL) {}
+    constructor(private bancoDeDados: BancoDeDados) {}
 
     salvar(pedido: Pedido): void {
         this.bancoDeDados.salvar(pedido);

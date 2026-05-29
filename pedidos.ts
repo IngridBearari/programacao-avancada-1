@@ -127,3 +127,17 @@ class PedidoProdutoDigital extends Pedido implements PedidoProcessavel, PedidoCo
         console.log("Nota fiscal digital gerada.");
     }
 }
+
+/*
+Justificativa das mudanças:
+1. SRP: Pedido ficou responsavel apenas pelos dados principais; calculos,
+   persistencia e envio de e-mail foram separados em servicos especificos.
+2. OCP: Os descontos foram modelados pela interface RegraDesconto, permitindo
+   criar novos descontos sem alterar a CalculadoraPedido.
+3. LSP: PedidoProdutoDigital nao herda nem implementa comportamento de frete,
+   evitando excecoes em metodos que nao fazem sentido para produtos digitais.
+4. ISP: A interface grande de tarefas foi dividida em interfaces menores, para
+   que cada tipo de pedido implemente apenas as capacidades que realmente possui.
+5. DIP: PedidoRepository depende da abstracao BancoDeDados, recebida por injecao,
+   permitindo trocar MySQL por outra implementacao, como BancoDeDadosEmMemoria.
+*/

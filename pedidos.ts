@@ -141,3 +141,27 @@ Justificativa das mudanças:
 5. DIP: PedidoRepository depende da abstracao BancoDeDados, recebida por injecao,
    permitindo trocar MySQL por outra implementacao, como BancoDeDadosEmMemoria.
 */
+
+const calculadora = new CalculadoraPedido();
+const bancoDeDados = new BancoDeDadosEmMemoria();
+const pedidoRepository = new PedidoRepository(bancoDeDados);
+const emailService = new EmailService();
+
+const pedidoFisico = new PedidoProdutoFisico(100, new DescontoVip());
+const pedidoDigital = new PedidoProdutoDigital(80, new DescontoPremium());
+
+console.log("Desconto pedido fisico:", calculadora.calcularDesconto(pedidoFisico));
+console.log("Frete pedido fisico:", calculadora.calcularFrete(pedidoFisico));
+pedidoFisico.processarPagamento();
+pedidoFisico.gerarNotaFiscal();
+pedidoFisico.imprimirEtiquetaFisica();
+
+console.log("Desconto pedido digital:", calculadora.calcularDesconto(pedidoDigital));
+pedidoDigital.processarPagamento();
+pedidoDigital.gerarNotaFiscal();
+
+pedidoRepository.salvar(pedidoFisico);
+pedidoRepository.salvar(pedidoDigital);
+emailService.enviarConfirmacao();
+
+console.log("Pedidos salvos em memoria:", bancoDeDados.dados.length);

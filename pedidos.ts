@@ -9,6 +9,14 @@ class BancoDeDadosMySQL implements BancoDeDados {
     }
 }
 
+class BancoDeDadosEmMemoria implements BancoDeDados {
+    public dados: any[] = [];
+
+    salvar(dados: any): void {
+        this.dados.push(dados);
+    }
+}
+
 // 2. Servicos com responsabilidades especificas
 interface RegraDesconto {
     calcular(valorTotal: number): number;
